@@ -33,6 +33,7 @@ $query = 'SELECT * FROM messages ORDER BY id DESC';
 $stmt = $pdo->query($query);
 
 while ($data = $stmt->fetch()) {
+   
     ?>
     <blockquote>
     <!-- Design des messages envoyés -->
@@ -40,7 +41,11 @@ while ($data = $stmt->fetch()) {
         <?= $data['contenu'] ?>
         <span class ="pull-right">
           <a href="index.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-info">Modifier</button></a>
-          <a href="suppression-msg.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-danger">Supprimer</button></a>
+          <a href="suppression-msg.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-danger">Supprimer</button></a></span></br>
+        <?php  
+        echo "Date d'ajout : " ;
+              echo date("Y-m-d H-i-s",$data['date_emission']); 
+              ?> 
         </span>
     </blockquote>
     <?php
@@ -50,3 +55,8 @@ while ($data = $stmt->fetch()) {
 <?php include('includes/bas.inc.php'); ?>
 
 <!-- UNIX_TIMESTAMP lors de l'ajout ou de la modification d'une date -->
+<!-- setcookie('nom','valeur',validité en seconde')
+$_COOKIE('nom')
+mot d epasse -> MD5 permet de crypter la chaine de caractère // comparer les deux MD5 lors de la connection
+fonction en phph déjà dispo pour MD5 voir doc
+

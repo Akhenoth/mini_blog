@@ -14,7 +14,7 @@
 	//	$prep->execute();
 
 
-		$query = 'UPDATE messages SET contenu=(:contenu), date_emission =NOW() WHERE id = (:id)';
+		$query = 'UPDATE messages SET contenu=(:contenu), date_emission =UNIX_TIMESTAMP() WHERE id = (:id)';
 		$prep = $pdo->prepare($query);
 	//	$prep->bindValue(':contenu',$_POST['message']);
 	//	$prep->bindValue(':id',$_POST['id']);
@@ -31,7 +31,7 @@
 	//	}
 
 	/*On effectue l'insertion de la donnée dans la base*/
-		$query = 'INSERT INTO messages (contenu, date_emission) VALUES (:contenu, NOW())';
+		$query = 'INSERT INTO messages (contenu, date_emission) VALUES (:contenu, UNIX_TIMESTAMP())';
 		$prep = $pdo->prepare($query);
 		$prep->execute(array(':contenu' => $_POST['message']));
 		}

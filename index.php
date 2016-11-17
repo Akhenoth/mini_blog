@@ -37,15 +37,16 @@ while ($data = $stmt->fetch()) {
     <blockquote>
     <!-- Design des messages envoyés -->
         
-        <div class="col-md-8"><?= $data['contenu'] ?></div>
-        <div class="col-md-1">
-        <a href="index.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-info">Modifier</button></a></div>
-        <div class="col-md-2">
-        <a href="suppression-msg.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-danger">Supprimer</button></a>
-        </div>
+        <?= $data['contenu'] ?>
+        <span class ="pull-right">
+          <a href="index.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-info">Modifier</button></a>
+          <a href="suppression-msg.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-danger">Supprimer</button></a>
+        </span>
     </blockquote>
     <?php
 }
 ?>
 
 <?php include('includes/bas.inc.php'); ?>
+
+<!-- UNIX_TIMESTAMP lors de l'ajout ou de la modification d'une date -->

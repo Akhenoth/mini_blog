@@ -7,27 +7,52 @@
 <?php
 include('includes/connexion.inc.php');
 include('includes/haut.inc.php');
+
+/*Hachage du mot de passe*/
+
+
+/* Vérification de la connexion */
+$query = 'SELECT id FROM utilisateur WHERE pseudo = (:pseudo) AND mdp=(:mdp)';
+$prep = $pdo->prepare($query);
+$prep ->bindValue(':pseudo', $_POST['pseudo']);
+$prep ->bindValue(':mdp', $_POST['mdp']);
+$prep->execute();
+$resultat = $prep->fetch();
+$sid = md5($_POST['pseudo']).time();
+
+if(!$resultat){
+  echo 'Mauvais identifiant ou mot de passe !';
+}else{
+  session_start();
+  setcookie(":pseudo",":sid", time()+6*60);
+//  $_SESSION['pseudo'] = $pseudo;
+  echo 'Vous êtes connecté !';
+}
+
+
+
 ?>
 
-  <form action="connexion.php" method="post">
+<form action="connexion.php" method="post">
   <div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+    <label for="pseudo">Pseudo</label>
+    <input type="input" class="form-control" id="pseudo" placeholder="UnPseudoCommeUnAutre">
   </div>
   <div class="form-group">
-    <label for="exampleInputPassword1">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+    <label for="mdp">Mot de passe</label>
+    <input type="password" class="form-control" id="mdp" placeholder="°°°°°°°">
   </div>
-  <button type="submit" class="btn btn-default">Submit</button>
+  <button type="submit" id="connexion" class="btn btn-default">Me connecter</button>
 </form>
 
 <?php include('includes/bas.inc.php'); ?>
 
 <!-- $sid = md5($_POST['email'].time());
 
-DOnnée table utilisateur
+Donnée table utilisateur
 ID
 Pseudo
 Email
 Mdp
-Sid -->
+Sid 
+-->

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include('includes/connexion.inc.php');
 include('includes/haut.inc.php');
 ?>
@@ -42,10 +43,10 @@ while ($data = $stmt->fetch()) {
         <span class ="pull-right">
           <a href="index.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-info">Modifier</button></a>
           <a href="suppression-msg.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-danger">Supprimer</button></a></span></br>
-        <?php  
-        echo "Date d'ajout : " ;
-              echo date("Y-m-d H-i-s",$data['date_emission']); 
-              ?> 
+          <?php  
+            echo "Date d'ajout : " ;
+            echo date("Y-m-d H-i-s",$data['date_emission']); 
+          ?> 
         </span>
     </blockquote>
     <?php

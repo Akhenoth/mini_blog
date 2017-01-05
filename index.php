@@ -18,11 +18,16 @@ include('includes/haut.inc.php');
         //  $msgmodif->fetch();
           }
         ?>
+        <?php if($connecte==true){
+
+        ?>
         <textarea id="message" name="message" class="form-control" placeholder="Message"><?php if(isset($_GET['id'])){echo $msgmodif['contenu']; } ?></textarea>
+        
       </div>
     </div>
     <div class="col-sm-2">
       <button type="submit" class="btn btn-success btn-lg">Envoyer</button>
+      <?php } ?>
     </div>                        
   </form>
 </div>
@@ -41,9 +46,11 @@ while ($data = $stmt->fetch()) {
         
         <?= $data['contenu'] ?>
         <span class ="pull-right">
+        <?php if($connecte==true){ ?>
           <a href="index.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-info">Modifier</button></a>
           <a href="suppression-msg.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-danger">Supprimer</button></a></span></br>
           <?php  
+          }
             echo "Date d'ajout : " ;
             echo date("Y-m-d H-i-s",$data['date_emission']); 
           ?> 

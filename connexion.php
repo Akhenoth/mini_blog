@@ -1,5 +1,5 @@
 <!-- if(){
-  requete préparée de vérification utilisateur (where email = et mdp = md5(mdp))
+  requete préparée de vérification utilisateur (where email = email et mdp = md5(mdp))
    SI OK génération sid
   stockage sid dans le cookie et dans la bd (mettre à jour l'utilisateur avec l'identifiant de session)
 }else{ -->
@@ -9,38 +9,57 @@ include('includes/connexion.inc.php');
 include('includes/haut.inc.php');
 
 /*Hachage du mot de passe*/
+echo 'on test la connexion';
+if(isset($_POST['pseudo']) && isset($_POST['mdp'])){
+  /* Vérification de la connexion */
+  $query = 'SELECT id FROM utilisateur WHERE pseudo = (:pseudo) AND mdp=(:mdp)';
+  $prep = $pdo->prepare($query);
+  $prep ->bindValue(':pseudo', $_POST['pseudo']);
+  $prep ->bindValue(':mdp', $_POST['mdp']);
+  $prep->execute();
+  $resultat = $prep->fetch();
+  $recount = $prep->rowCount();
+
+  if($recount == 0){
+    echo 'Mauvais identifiant ou mot de passe !';
+  }else{
 
 
-/* Vérification de la connexion */
-$query = 'SELECT id FROM utilisateur WHERE pseudo = (:pseudo) AND mdp=(:mdp)';
-$prep = $pdo->prepare($query);
-$prep ->bindValue(':pseudo', $_POST['pseudo']);
-$prep ->bindValue(':mdp', $_POST['mdp']);
-$prep->execute();
-$resultat = $prep->fetch();
-$sid = md5($_POST['pseudo']).time();
 
-if(!$resultat){
-  echo 'Mauvais identifiant ou mot de passe !';
-}else{
-  session_start();
-  setcookie(":pseudo",":sid", time()+6*60);
-//  $_SESSION['pseudo'] = $pseudo;
-  echo 'Vous êtes connecté !';
+    $sid = md5($_POST['pseudo']).time();
+
+
+    setcookie('Uncookie',$sid, time()+6*60,null, null, false, true);
+    
+      $query = "UPDATE utilisateur SET sid = ? WHERE pseudo=? and mdp=?";
+            $prep = $pdo->prepare($query);
+            $prep->bindValue(1, $sid);
+            $prep->bindValue(2, $_POST['pseudo']);
+            $prep->bindValue(3, $_POST['mdp']);
+            $prep->execute();
+    header('Location: index.php');
+  //  $_SESSION['pseudo'] = $pseudo;
+  }
+
 }
+
+
+
+
+  
 
 
 
 ?>
 
-<form action="connexion.php" method="post">
+<form action="connexion.php" method="POST">
   <div class="form-group">
     <label for="pseudo">Pseudo</label>
-    <input type="input" class="form-control" id="pseudo" placeholder="UnPseudoCommeUnAutre">
+    <input type="input" name='pseudo'class="form-control" id="pseudo" placeholder="UnPseudoCommeUnAutre">
   </div>
   <div class="form-group">
     <label for="mdp">Mot de passe</label>
-    <input type="password" class="form-control" id="mdp" placeholder="°°°°°°°">
+    <input type="password" name='mdp' class="form-control" id="mdp" placeholder="°°°°°°°">
   </div>
   <button type="submit" id="connexion" class="btn btn-default">Me connecter</button>
 </form>

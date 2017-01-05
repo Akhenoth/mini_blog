@@ -50,7 +50,11 @@
                         <a href="#page-top"></a>
                     </li>
                     <li class="page-scroll">
+                        <?php if($connecte==true){ ?>
+                        <a href="deconnexion.php">Deconnexion</a>
+                        <?php }else{ ?>
                         <a href="connexion.php">Connexion</a>
+                        <?php } ?>
                     </li>    
                 </ul>
             </div>

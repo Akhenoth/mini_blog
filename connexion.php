@@ -9,7 +9,6 @@ include('includes/connexion.inc.php');
 include('includes/haut.inc.php');
 
 /*Hachage du mot de passe*/
-echo 'on test la connexion';
 if(isset($_POST['pseudo']) && isset($_POST['mdp'])){
   /* Vérification de la connexion */
   $query = 'SELECT id FROM utilisateur WHERE pseudo = (:pseudo) AND mdp=(:mdp)';
@@ -21,7 +20,7 @@ if(isset($_POST['pseudo']) && isset($_POST['mdp'])){
   $recount = $prep->rowCount();
 
   if($recount == 0){
-    echo 'Mauvais identifiant ou mot de passe !';
+    ?><script>alert('Mauvais identifiant ou mot de passe !');</script> <?php
   }else{
 
 

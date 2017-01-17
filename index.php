@@ -35,10 +35,10 @@ include('includes/haut.inc.php');
 
 <?php
 /*Permet d'afficher sur la page les données insérées en base*/
-$query = 'SELECT * FROM messages ORDER BY id DESC';
-$stmt = $pdo->query($query);
+//$query = 'SELECT * FROM messages ORDER BY id DESC';
+//$stmt = $pdo->query($query);
 
-while ($data = $stmt->fetch()) {
+/*while ($data = $stmt->fetch()) {
    
     ?>
     <blockquote>
@@ -57,8 +57,66 @@ while ($data = $stmt->fetch()) {
         </span>
     </blockquote>
     <?php
+}*/
+
+
+/*Tentative de pagination*/
+//Nombre de messages par page
+$messagesParPages = 3;
+//Récupération du nombre total de message 
+$nombreMessages = 'SELECT COUNT(*) AS TotalMessages FROM messages';
+$prep = $pdo->prepare($nombreMessages);
+$prep ->execute();
+$donneesTotales = $prep->fetch();
+$total = $donneesTotales['TotalMessages'];
+//Compter le nombre de pages vis à vis du nombre de messages à afficher
+$nombrePages = ceil($total/$messagesParPages);
+
+if(isset($_GET['page'])){
+  $pageActuelle=intval($_GET['page']);
+  if($pageActuelle > $nombrePages){
+    $pageActuelle = $nombrePages;
+  }
+}else{
+  $pageActuelle=1;
 }
+
+$lecturePremiereDonnee = ($pageActuelle-1)*$messagesParPages;
+
+$lectureMessage = 'SELECT * FROM messages ORDER BY id DESC LIMIT '.$lecturePremiereDonnee.','.$messagesParPages.'';
+$prepa = $pdo->prepare($lectureMessage);
+$prepa ->execute();
+
+//$query = 'SELECT * FROM messages ORDER BY id DESC';
+//$stmt = $pdo->query($query);
+
+
+while ($data = $prepa->fetch()) {
+   
+    ?>
+    <blockquote>
+    <!-- Design des messages envoyés -->
+        
+        <?php $data['contenu'] ?>
+        <span class ="pull-right">
+        <?php if($connecte==true){ ?>
+          <a href="index.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-info">Modifier</button></a>
+          <a href="suppression-msg.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-danger">Supprimer</button></a></span></br>
+          <?php  
+          }
+            echo "Date d'ajout : " ;
+            echo date("Y-m-d H-i-s",$data['date_emission']); 
+          ?> 
+        </span>
+    </blockquote>
+    <?php
+}
+
+
+
 ?>
+
+
 <ul class="pagination">
   <li><a href="#">1</a></li>
   <li><a href="#">2</a></li>
@@ -66,6 +124,8 @@ while ($data = $stmt->fetch()) {
   <li><a href="#">4</a></li>
   <li><a href="#">5</a></li>
 </ul>  
+
+
 <?php include('includes/bas.inc.php'); ?>
 
 <!-- UNIX_TIMESTAMP lors de l'ajout ou de la modification d'une date -->

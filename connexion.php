@@ -8,12 +8,12 @@
 include('includes/connexion.inc.php');
 include('includes/haut.inc.php');
 
-/*Hachage du mot de passe*/
-if(isset($_POST['pseudo']) && isset($_POST['mdp'])){
+
+if(isset($_POST['mail']) && isset($_POST['mdp'])){
   /* Vérification de la connexion */
-  $query = 'SELECT id FROM utilisateur WHERE pseudo = (:pseudo) AND mdp=(:mdp)';
+  $query = 'SELECT id FROM utilisateur WHERE mail = (:mail) AND mdp=(:mdp)';
   $prep = $pdo->prepare($query);
-  $prep ->bindValue(':pseudo', $_POST['pseudo']);
+  $prep ->bindValue(':mail', $_POST['mail']);
   $prep ->bindValue(':mdp', $_POST['mdp']);
   $prep->execute();
   $resultat = $prep->fetch();
@@ -24,16 +24,16 @@ if(isset($_POST['pseudo']) && isset($_POST['mdp'])){
   }else{
 
 
+    /*Hachage du mot de passe*/
+    $sid = md5($_POST['mail']).time();
 
-    $sid = md5($_POST['pseudo']).time();
-
-
+    /*Création d'uncookie*/
     setcookie('Uncookie',$sid, time()+6*60,null, null, false, true);
     
-      $query = "UPDATE utilisateur SET sid = ? WHERE pseudo=? and mdp=?";
+      $query = "UPDATE utilisateur SET sid = ? WHERE mail=? and mdp=?";
             $prep = $pdo->prepare($query);
             $prep->bindValue(1, $sid);
-            $prep->bindValue(2, $_POST['pseudo']);
+            $prep->bindValue(2, $_POST['mail']);
             $prep->bindValue(3, $_POST['mdp']);
             $prep->execute();
     header('Location: index.php');
@@ -53,8 +53,8 @@ if(isset($_POST['pseudo']) && isset($_POST['mdp'])){
 
 <form action="connexion.php" method="POST">
   <div class="form-group">
-    <label for="pseudo">Pseudo</label>
-    <input type="input" name='pseudo'class="form-control" id="pseudo" placeholder="UnPseudoCommeUnAutre">
+    <label for="mail">E-Mail de connexion</label>
+    <input type="input" name='mail'class="form-control" id="mail" placeholder="xxxx@domaine.fr">
   </div>
   <div class="form-group">
     <label for="mdp">Mot de passe</label>

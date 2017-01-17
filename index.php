@@ -34,97 +34,66 @@ include('includes/haut.inc.php');
 
 
 <?php
-/*Permet d'afficher sur la page les données insérées en base*/
-//$query = 'SELECT * FROM messages ORDER BY id DESC';
-//$stmt = $pdo->query($query);
+  //Nombre de messages par page
+  $messagesParPages = 7;
+  //Récupération du nombre total de message 
+  $nombreMessages = 'SELECT COUNT(*) AS TotalMessages FROM messages';
+  $prep = $pdo->prepare($nombreMessages);
+  $prep->execute();
+  $donneesTotales = $prep->fetch();
+  $total = $donneesTotales['TotalMessages'];
+  //Compter le nombre de pages vis à vis du nombre de messages à afficher
+  $nombrePages = ceil($total/$messagesParPages);
 
-/*while ($data = $stmt->fetch()) {
-   
-    ?>
-    <blockquote>
-    <!-- Design des messages envoyés -->
-        
-        <?= $data['contenu'] ?>
-        <span class ="pull-right">
-        <?php if($connecte==true){ ?>
-          <a href="index.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-info">Modifier</button></a>
-          <a href="suppression-msg.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-danger">Supprimer</button></a></span></br>
-          <?php  
-          }
-            echo "Date d'ajout : " ;
-            echo date("Y-m-d H-i-s",$data['date_emission']); 
-          ?> 
-        </span>
-    </blockquote>
-    <?php
-}*/
-
-
-/*Tentative de pagination*/
-//Nombre de messages par page
-$messagesParPages = 3;
-//Récupération du nombre total de message 
-$nombreMessages = 'SELECT COUNT(*) AS TotalMessages FROM messages';
-$prep = $pdo->prepare($nombreMessages);
-$prep ->execute();
-$donneesTotales = $prep->fetch();
-$total = $donneesTotales['TotalMessages'];
-//Compter le nombre de pages vis à vis du nombre de messages à afficher
-$nombrePages = ceil($total/$messagesParPages);
-
-if(isset($_GET['page'])){
-  $pageActuelle=intval($_GET['page']);
-  if($pageActuelle > $nombrePages){
-    $pageActuelle = $nombrePages;
+  if(isset($_GET['page'])){
+    $pageActuelle=intval($_GET['page']);
+    if($pageActuelle > $nombrePages){
+      $pageActuelle = $nombrePages;
+    }
+  }else{
+    $pageActuelle=1;
   }
-}else{
-  $pageActuelle=1;
-}
+  //Récupération de la derniere donnée pour afficher à partir du bon message
+  $lecturePremiereDonnee = ($pageActuelle-1)*$messagesParPages;
 
-$lecturePremiereDonnee = ($pageActuelle-1)*$messagesParPages;
+  $lectureMessage = 'SELECT * FROM messages ORDER BY id DESC LIMIT '.$lecturePremiereDonnee.','.$messagesParPages.'';
+  $prepa = $pdo->prepare($lectureMessage);
+  $prepa ->execute();
 
-$lectureMessage = 'SELECT * FROM messages ORDER BY id DESC LIMIT '.$lecturePremiereDonnee.','.$messagesParPages.'';
-$prepa = $pdo->prepare($lectureMessage);
-$prepa ->execute();
+  while ($data = $prepa->fetch()) {
+     
+      ?>
+      <blockquote>
+      <!-- Design des messages envoyés -->
+          
+          <?= $data['contenu'] ?>
+          <span class ="pull-right">
+          <?php if($connecte==true){ ?>
+            <a href="index.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-info">Modifier</button></a>
+            <a href="suppression-msg.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-danger">Supprimer</button></a></span></br>
+            <?php  
+            }
+              echo "Date d'ajout : " ;
+              echo date("Y-m-d H-i-s",$data['date_emission']); 
+            ?> 
+          </span>
+      </blockquote>
+      <?php
+  }
 
-//$query = 'SELECT * FROM messages ORDER BY id DESC';
-//$stmt = $pdo->query($query);
-
-
-while ($data = $prepa->fetch()) {
-   
-    ?>
-    <blockquote>
-    <!-- Design des messages envoyés -->
-        
-        <?php $data['contenu'] ?>
-        <span class ="pull-right">
-        <?php if($connecte==true){ ?>
-          <a href="index.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-info">Modifier</button></a>
-          <a href="suppression-msg.php?id=<?= $data['id'] ?>"><button type="button" class="btn btn-danger">Supprimer</button></a></span></br>
-          <?php  
-          }
-            echo "Date d'ajout : " ;
-            echo date("Y-m-d H-i-s",$data['date_emission']); 
-          ?> 
-        </span>
-    </blockquote>
-    <?php
-}
-
-
+  for($i=1; $i<=$nombrePages; $i++){
+    if($i==$pageActuelle){
+      echo '<ul class="pagination">
+            <li><a href="#">'.$i.'</a></li>
+            </ul>';
+    }else{ 
+      echo '<ul class="pagination">
+            <li><a href="index.php?page='.$i.'">'.$i.'</a></li>
+           </ul>';
+      }
+  }
 
 ?>
-
-
-<ul class="pagination">
-  <li><a href="#">1</a></li>
-  <li><a href="#">2</a></li>
-  <li><a href="#">3</a></li>
-  <li><a href="#">4</a></li>
-  <li><a href="#">5</a></li>
-</ul>  
-
 
 <?php include('includes/bas.inc.php'); ?>
 

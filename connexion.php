@@ -19,11 +19,9 @@
           $(document).ready(function(){
             $('#cache').removeClass();
             $('#cache').addClass("alert alert-danger");
-            $('#cache').html("Le login est incorrect");
+            $('#cache').html("L'adresse mail ou le mot de passe saisi est incorrect.");
             $('#cache').slideDown("slow");
             return false;
-          }
-          return true;
           });
           </script>
 <?php 

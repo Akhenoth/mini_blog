@@ -55,6 +55,7 @@
                         <a href="deconnexion.php">Deconnexion</a>
                         <?php }else{ ?>
                         <a href="connexion.php">Connexion</a>
+                        <a href="inscription.php">Inscription</a>
                         <?php } ?>
                     </li>    
                 </ul>

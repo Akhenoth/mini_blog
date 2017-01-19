@@ -41,7 +41,7 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="#page-top">Micro blog</a>
+                <a class="navbar-brand" href="index.php">Micro blog</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -73,7 +73,7 @@
                     <div class="intro-text">
                         <span class="name">Le fil</span>
                         <hr class="star-light">
-                    </div>
+                    </div>    
                 </div>
             </div>
         </div>

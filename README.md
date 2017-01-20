@@ -9,3 +9,5 @@ une adresse mail ou un mot de passe non valide.
 - Un système de cookie permet de garder la connexion de l'utilisateur.
 - La page principale du site permet entre autre, de rédiger, éditer ou supprimer des messages. Pour cela, l'utilisateur doit être
 connecté. Lorsque ce dernier est déconnecté, il ne peut accéder à aucune de ces fonctionnalités.
+- Pour plus d'esthétisme, le lien d'inscription se situe dans la page de connexion, en dessous du bouton "Me connecter" , via le
+lien "Pas encore inscrit ?"

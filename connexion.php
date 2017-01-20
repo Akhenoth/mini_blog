@@ -15,7 +15,7 @@
 
     if($recount == 0){
       ?> <script>
-        // Script vérifiant les log (champs vides)
+        // Script affichant un message d'erreur si une des informations est incorrecte
           $(document).ready(function(){
             $('#cache').removeClass();
             $('#cache').addClass("alert alert-danger");
@@ -31,15 +31,15 @@
       /*Hachage du mot de passe*/
       $sid = md5($_POST['mail']).time();
 
-      /*Création d'uncookie*/
+      /*Création d'un cookie*/
       setcookie('Uncookie',$sid, time()+6*60,null, null, false, true);
-      
-        $query = "UPDATE utilisateur SET sid = ? WHERE mail=? and mdp=?";
-              $prep = $pdo->prepare($query);
-              $prep->bindValue(1, $sid);
-              $prep->bindValue(2, $_POST['mail']);
-              $prep->bindValue(3, $_POST['mdp']);
-              $prep->execute();
+      /*Mise à jour du SID dans la base de donnée*/
+      $query = "UPDATE utilisateur SET sid = ? WHERE mail=? and mdp=?";
+            $prep = $pdo->prepare($query);
+            $prep->bindValue(1, $sid);
+            $prep->bindValue(2, $_POST['mail']);
+            $prep->bindValue(3, $_POST['mdp']);
+            $prep->execute();
       header('Location: index.php');
     }
   }

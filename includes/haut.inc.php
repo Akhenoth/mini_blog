@@ -50,6 +50,7 @@
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
+                    <!--Si l'utilisateur est connecté, on affiche la deconnexion, sinon on affiche la connexion ou l'inscription -->
                     <li class="page-scroll">
                         <?php if($connecte==true){ ?>
                         <a href="deconnexion.php">Deconnexion</a>
@@ -73,7 +74,15 @@
                     <div class="intro-text">
                         <span class="name">Le fil</span>
                         <hr class="star-light">
-                    </div>    
+                    </div> 
+                    <div class="col-lg-12">
+                        <form action="recherche.php" method="POST" id="recherche">
+                            <input type="text" class="form-control" placeholder="Indiquer une recherche">
+                            <span class="input-group-btn"> 
+                                <button class="btn btn-default" type="button">Rechercher</button>
+                            </span>
+                        </div><!-- /input-group -->
+                    </div>
                 </div>
             </div>
         </div>

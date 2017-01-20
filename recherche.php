@@ -1,8 +1,9 @@
 <?php
+/*Tentative de recherche*/
 	include('includes/connexion.inc.php');
 
 	if($connecte == true){
-		/*Vérfication de l'ID pour préparer l'update*/
+		/*Requete de recherche*/
 		if(isset($_GET['search']) && !empty($_GET['search'])){
 			$query = 'SELECT * FROM messages WHERE contenu = (:search)';
 			$prep = $pdo->prepare($query);

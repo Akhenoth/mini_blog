@@ -15,7 +15,6 @@ include('includes/haut.inc.php');
         <?php 
           $query = 'SELECT * FROM messages WHERE id='.$_GET['id'];
           $msgmodif = $pdo->query($query)->fetch();
-        //  $msgmodif->fetch();
           }
         ?>
         <?php if($connecte==true){
@@ -34,6 +33,9 @@ include('includes/haut.inc.php');
 
 
 <?php
+
+//Pagination
+
   //Nombre de messages par page
   $messagesParPages = 7;
   //Récupération du nombre total de message 
@@ -80,7 +82,7 @@ include('includes/haut.inc.php');
       </blockquote>
       <?php
   }
-
+//Affichage des numéros de pages
   for($i=1; $i<=$nombrePages; $i++){
     if($i==$pageActuelle){
       echo '<ul class="pagination">
@@ -96,10 +98,4 @@ include('includes/haut.inc.php');
 ?>
 
 <?php include('includes/bas.inc.php'); ?>
-
-<!-- UNIX_TIMESTAMP lors de l'ajout ou de la modification d'une date -->
-<!-- setcookie('nom','valeur',validité en seconde')
-$_COOKIE('nom')
-mot d epasse -> MD5 permet de crypter la chaine de caractère // comparer les deux MD5 lors de la connection
-fonction en phph déjà dispo pour MD5 voir doc
 
